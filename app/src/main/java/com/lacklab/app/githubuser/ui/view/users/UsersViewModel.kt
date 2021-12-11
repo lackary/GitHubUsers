@@ -13,16 +13,16 @@ import javax.inject.Inject
 class UsersViewModel @Inject constructor(
     private val repository: GitHubRepository
 ) : BaseViewModel() {
-    private lateinit var _users: Flow<PagingData<GitHubUser>>
-    val user: Flow<PagingData<GitHubUser>>
-        get() = _users
+    private lateinit var _usersFlow: Flow<PagingData<GitHubUser>>
+    val userFlow: Flow<PagingData<GitHubUser>>
+        get() = _usersFlow
 
     init {
-//        getUsers()
+        getUsers()
         Timber.d("UsersViewModel")
     }
 
     private fun getUsers() {
-        _users = repository.users()
+        _usersFlow = repository.users()
     }
 }
