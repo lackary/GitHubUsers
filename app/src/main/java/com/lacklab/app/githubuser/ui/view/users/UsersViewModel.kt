@@ -19,10 +19,9 @@ class UsersViewModel @Inject constructor(
 
     init {
         getUsers()
-        Timber.d("UsersViewModel")
     }
 
     private fun getUsers() {
-        _usersFlow = repository.users()
+        _usersFlow = repository.getUsers()
     }
 }

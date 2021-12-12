@@ -14,7 +14,7 @@ class GitHubRepository @Inject constructor(
 ) {
 
 
-    fun users(): Flow<PagingData<GitHubUser>> {
+    fun getUsers(): Flow<PagingData<GitHubUser>> {
         return Pager(
             config = PagingConfig(pageSize = 10, prefetchDistance = 2),
             pagingSourceFactory = {

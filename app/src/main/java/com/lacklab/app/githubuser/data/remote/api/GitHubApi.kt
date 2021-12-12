@@ -14,18 +14,10 @@ import retrofit2.http.Query
 interface GitHubApi {
 
     @GET("users")
-    suspend fun users(
+    suspend fun getUsers(
         @Query("since") since: Int? = 0,
         @Query("per_page") perPage: Int,
     ): ApiResponse<List<GitHubUser>>
-
-    @GET("search/users")
-    suspend fun searchUsers(
-        @Query("q", encoded = true) query: String,
-        @Query("order") order: String? = "desc",
-        @Query("page") page: Int,
-        @Query("per_page") perPage: Int,
-    ): ApiResponse<GitHubUsers>
 
     companion object {
         private const val BASE_URL = "https://api.github.com/"

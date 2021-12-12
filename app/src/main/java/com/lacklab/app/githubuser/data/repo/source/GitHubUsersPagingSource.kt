@@ -23,7 +23,7 @@ class GitHubUsersPagingSource(
         val since = params.key?: GITHUB_STARTING_SINCE_INDEX
         var nextPage: Int? = null
         return try {
-            val response = api.users(
+            val response = api.getUsers(
                 since = since,
                 perPage = params.loadSize)
             var data: GitHubUsers? = null
