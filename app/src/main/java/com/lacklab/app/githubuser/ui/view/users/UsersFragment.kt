@@ -21,9 +21,13 @@ import javax.inject.Inject
 class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
 
     private val usersViewModel: UsersViewModel by viewModels()
-    private var isGridLayout = false
+
     @Inject
     lateinit var userPagingAdapter: UserPagingAdapter
+
+    companion object {
+        var isGridLayout = false
+    }
 
     override val layoutId: Int
         get() = R.layout.fragment_users
@@ -69,6 +73,8 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
             }
 
             fabLayout.setOnClickListener {
+
+
                 isGridLayout = if (!isGridLayout) {
                     changeRecycleViewLayout(this, LAYOUT_GRID)
                     true
@@ -85,12 +91,29 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
         with(binding) {
             when(layoutType) {
                 LAYOUT_LINEAR -> {
+                    val layoutManager = recycleViewUser.layoutManager as GridLayoutManager
+                    val position = layoutManager.findFirstCompletelyVisibleItemPosition()
                     recycleViewUser.layoutManager = LinearLayoutManager(context)
+                    with(userPagingAdapter) {
+                        recycleViewUser.adapter = withLoadStateFooter(
+                            footer = PagingLoadStateAdapter(this)
+                        )
+                    }
+                    recycleViewUser.scrollToPosition(position)
                     fabLayout.setImageResource(R.drawable.ic_round_grid_view_black_24)
                 }
                 LAYOUT_GRID -> {
+                    val layoutManager = recycleViewUser.layoutManager as LinearLayoutManager
+                    val position = layoutManager.findFirstCompletelyVisibleItemPosition()
                     recycleViewUser.layoutManager = GridLayoutManager(context,2)
+                    with(userPagingAdapter) {
+                        recycleViewUser.adapter = withLoadStateFooter(
+                            footer = PagingLoadStateAdapter(this)
+                        )
+                    }
+                    recycleViewUser.scrollToPosition(position)
                     fabLayout.setImageResource(R.drawable.ic_round_view_list_black_24)
+
                 }
             }
         }
