@@ -22,23 +22,21 @@ class UserPagingAdapter @Inject constructor()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         if (!isGridLayout) {
-            Timber.d("Linear")
             val binding = DataBindingUtil.inflate<ItemUserListBinding>(
                 LayoutInflater.from(parent.context),
                 R.layout.item_user_list,
                 parent,
                 false
             )
-            return UserViewHolder(binding, isGridLayout)
+            return UserViewHolder(binding)
         } else {
-            Timber.d("grid")
             val binding = DataBindingUtil.inflate<ItemUserGridBinding>(
                 LayoutInflater.from(parent.context),
                 R.layout.item_user_grid,
                 parent,
                 false
             )
-            return UserViewHolder(binding, isGridLayout)
+            return UserViewHolder(binding)
         }
 
     }
@@ -49,8 +47,7 @@ class UserPagingAdapter @Inject constructor()
         }
     }
 
-
-    class UserViewHolder(private val binding: ViewDataBinding, private val isGrid: Boolean )
+    class UserViewHolder(private val binding: ViewDataBinding)
         : RecyclerView.ViewHolder(binding.root) {
         init {
             with(binding) {
@@ -59,7 +56,6 @@ class UserPagingAdapter @Inject constructor()
         }
 
         fun bind(item: GitHubUser) {
-            Timber.d("bind")
             if(!isGridLayout) {
                 with(binding as ItemUserListBinding) {
                     user = item

@@ -5,6 +5,7 @@ import androidx.fragment.app.viewModels
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.lacklab.app.githubuser.R
 import com.lacklab.app.githubuser.base.BaseFragment
 import com.lacklab.app.githubuser.databinding.FragmentUsersBinding
@@ -73,8 +74,6 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
             }
 
             fabLayout.setOnClickListener {
-
-
                 isGridLayout = if (!isGridLayout) {
                     changeRecycleViewLayout(this, LAYOUT_GRID)
                     true
@@ -87,35 +86,32 @@ class UsersFragment : BaseFragment<FragmentUsersBinding, UsersViewModel>() {
         }
     }
 
+    /**
+     * change RecycleView layout by linear, Grid, and StaggeredGrid
+     * */
     private fun changeRecycleViewLayout(binding: FragmentUsersBinding, layoutType: Int) {
         with(binding) {
+            var position = 0
             when(layoutType) {
                 LAYOUT_LINEAR -> {
-                    val layoutManager = recycleViewUser.layoutManager as GridLayoutManager
-                    val position = layoutManager.findFirstCompletelyVisibleItemPosition()
+                    position = (recycleViewUser.layoutManager as GridLayoutManager)
+                        .findFirstCompletelyVisibleItemPosition()
                     recycleViewUser.layoutManager = LinearLayoutManager(context)
-                    with(userPagingAdapter) {
-                        recycleViewUser.adapter = withLoadStateFooter(
-                            footer = PagingLoadStateAdapter(this)
-                        )
-                    }
-                    recycleViewUser.scrollToPosition(position)
                     fabLayout.setImageResource(R.drawable.ic_round_grid_view_black_24)
                 }
                 LAYOUT_GRID -> {
-                    val layoutManager = recycleViewUser.layoutManager as LinearLayoutManager
-                    val position = layoutManager.findFirstCompletelyVisibleItemPosition()
+                    position = (recycleViewUser.layoutManager as LinearLayoutManager)
+                        .findFirstCompletelyVisibleItemPosition()
                     recycleViewUser.layoutManager = GridLayoutManager(context,2)
-                    with(userPagingAdapter) {
-                        recycleViewUser.adapter = withLoadStateFooter(
-                            footer = PagingLoadStateAdapter(this)
-                        )
-                    }
-                    recycleViewUser.scrollToPosition(position)
                     fabLayout.setImageResource(R.drawable.ic_round_view_list_black_24)
-
                 }
             }
+            with(userPagingAdapter) {
+                recycleViewUser.adapter = withLoadStateFooter(
+                    footer = PagingLoadStateAdapter(this)
+                )
+            }
+            recycleViewUser.scrollToPosition(position)
         }
 
     }
