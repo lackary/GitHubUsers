@@ -15,3 +15,4 @@ GitHub App for presenting All users
 - Retrofit2
 - Glide
 - Kotlin Flow
+- Unit Test for GitHub API
